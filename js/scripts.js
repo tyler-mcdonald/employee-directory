@@ -1,6 +1,7 @@
 /** Get and display 12 random users */
 const page = new Page();
 page.loadSearchForm();
+
 const users = "https://randomuser.me/api/?results=3&gender=male";
 const gallery = document.querySelector("#gallery");
 
@@ -10,7 +11,6 @@ async function getJSON(url) {
   const response = await fetch(url);
   const data = await response.json();
   return data.results;
-  // displayUserInfo(data.results);
 }
 
 getJSON(users).then(displayUserInfo);
@@ -37,7 +37,7 @@ async function displayUserInfo(array) {
     const employee = newEmployee(user);
 
     // Create html element
-    const html = employee.createElement();
+    const html = page.createElement(employee);
 
     gallery.insertAdjacentHTML("beforeend", html);
 
