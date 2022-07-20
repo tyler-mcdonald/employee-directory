@@ -7,40 +7,48 @@ const gallery = document.querySelector("#gallery");
 async function getJSON(url) {
   const response = await fetch(url);
   const data = await response.json();
-  console.log(data.results);
-  displayUserInfo(data.results);
+  return data.results;
+  // displayUserInfo(data.results);
 }
 
-getJSON(users);
+getJSON(users).then(displayUserInfo);
 
 // Map over each item and display on page
 // Refactor this into a Class???
-function displayUserInfo(array) {
-  array.map((user) => {
+async function displayUserInfo(array) {
+  await array.map((user) => {
     // Store user info
     // Possible into object/array
-    const image = user.picture.large;
-    const firstName = user.name.first;
-    const lastName = user.name.last;
-    const email = user.email;
-    const city = user.location.city;
-    const state = user.location.state;
-    const country = user.location.country;
+    // prettier-ignore
+    const employee = new Employee(
+      user.picture.large,
+      user.name.first,
+      user.name.last,
+      user.email,
+      user.location.city,
+      user.location.state,
+      user.location.country);
+    console.log(employee);
 
     // Create html element
     const html = `
       <div class="card">
         <div class="card-img-container">
-            <img class="card-img" src="${image}" alt="${firstName} ${lastName}'s profile picture">
+            <img class="card-img" src="${employee.image}" alt="${employee.firstName} ${employee.lastName}'s profile picture">
         </div>
         <div class="card-info-container">
-            <h3 id="${firstName} ${lastName}" class="card-name cap">${firstName} ${lastName}</h3>
-            <p class="card-text">${email}</p>
-            <p class="card-text cap">${city}, ${state}, ${country}</p>
+            <h3 id="${employee.firstName} ${employee.lastName}" class="card-name cap">${employee.firstName} ${employee.lastName}</h3>
+            <p class="card-text">${employee.email}</p>
+            <p class="card-text cap">${employee.city}, ${employee.state}, ${employee.country}</p>
         </div>
       </div>
     `;
     gallery.insertAdjacentHTML("beforeend", html);
+
+    // Refactor
+    gallery.querySelector(".card").addEventListener("click", (e) => {
+      console.log(e.target);
+    });
   });
 }
 
@@ -58,8 +66,6 @@ function displayUserInfo(array) {
 
 /** Create a modal window */
 // On click user card
-// document.querySelector(".card").addEventListener("click", (e) => {
-//   console.log("log");
-// });
+
 // Populate modal information with selected user
 function createModal() {}
