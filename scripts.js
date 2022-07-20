@@ -1,12 +1,17 @@
 /** Get and display 12 random users */
 const users = "https://randomuser.me/api/?results=3&gender=male";
 const gallery = document.querySelector("#gallery");
+
 // Make a GET request to fetch API
 // Parse data into js object
-fetch(users)
-  .then((res) => res.json())
-  .then((data) => data.results)
-  .then(displayUserInfo);
+async function getJSON(url) {
+  const response = await fetch(url);
+  const data = await response.json();
+  console.log(data.results);
+  displayUserInfo(data.results);
+}
+
+getJSON(users);
 
 // Map over each item and display on page
 // Refactor this into a Class???
@@ -53,6 +58,8 @@ function displayUserInfo(array) {
 
 /** Create a modal window */
 // On click user card
-gallery.add;
+// document.querySelector(".card").addEventListener("click", (e) => {
+//   console.log("log");
+// });
 // Populate modal information with selected user
 function createModal() {}
