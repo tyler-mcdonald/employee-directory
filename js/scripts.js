@@ -4,6 +4,15 @@ page.loadSearchForm();
 
 const users = "https://randomuser.me/api/?results=3&gender=male";
 const gallery = document.querySelector("#gallery");
+const cards = document.querySelectorAll(".card");
+
+// async function listeners(array) {
+//   await array.forEach((item) => {
+//     item.addEventListener("click", (e) => console.log(e.target));
+//   });
+// }
+
+// listeners(cards);
 
 // Make a GET request to fetch API
 // Parse data into js object
@@ -25,12 +34,11 @@ function newEmployee(object) {
     object.location.state,
     object.location.country
   );
-  console.log(employee);
+
   return employee;
 }
 
 // Map over each item and display on page
-// Refactor this into a Class???
 async function displayUserInfo(array) {
   await array.map((user) => {
     // Store new employee object
@@ -41,10 +49,12 @@ async function displayUserInfo(array) {
 
     gallery.insertAdjacentHTML("beforeend", html);
 
-    gallery.querySelector(".card").addEventListener("click", (e) => {
-      console.log(e.target);
-    });
+    // gallery.querySelectorAll(".card").addEventListener("click", (e) => {
+    //   console.log(e.target);
+    // });
   });
+
+  return await array;
 }
 
 /** Create a modal window */
@@ -52,3 +62,11 @@ async function displayUserInfo(array) {
 
 // Populate modal information with selected user
 function createModal() {}
+
+/** EVENT LISTENERS */
+// Show modal window
+gallery.addEventListener("click", (e) => {
+  if (e.target.className !== "gallery") {
+    console.log(e.target);
+  }
+});
