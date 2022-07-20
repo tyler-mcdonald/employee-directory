@@ -13,21 +13,27 @@ async function getJSON(url) {
 
 getJSON(users).then(displayUserInfo);
 
+function newEmployee(object) {
+  const employee = new Employee(
+    object.picture.large,
+    object.name.first,
+    object.name.last,
+    object.email,
+    object.location.city,
+    object.location.state,
+    object.location.country
+  );
+  console.log(employee);
+  return employee;
+}
+
 // Map over each item and display on page
 // Refactor this into a Class???
 async function displayUserInfo(array) {
   await array.map((user) => {
     // Store user info
     // prettier-ignore
-    const employee = new Employee(
-      user.picture.large,
-      user.name.first,
-      user.name.last,
-      user.email,
-      user.location.city,
-      user.location.state,
-      user.location.country);
-    console.log(employee);
+    const employee = newEmployee(user)
 
     // Create html element
     const html = employee.createElement();
