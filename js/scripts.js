@@ -31,15 +31,14 @@ function newEmployee(object) {
 // Refactor this into a Class???
 async function displayUserInfo(array) {
   await array.map((user) => {
-    // Store user info
-    // prettier-ignore
-    const employee = newEmployee(user)
+    // Store new employee object
+    const employee = newEmployee(user);
 
     // Create html element
     const html = employee.createElement();
+
     gallery.insertAdjacentHTML("beforeend", html);
 
-    // Refactor
     gallery.querySelector(".card").addEventListener("click", (e) => {
       console.log(e.target);
     });
