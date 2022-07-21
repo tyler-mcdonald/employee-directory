@@ -14,15 +14,19 @@ class Page {
   }
 
   createElement(employee) {
+    const firstName = employee.name.first;
+    const lastName = employee.name.last;
+    const image = employee.picture.large;
+
     const html = `
-      <div class="card" id="${employee.firstName} ${employee.lastName}">
+      <div class="card" id="${firstName} ${lastName}">
         <div class="card-img-container">
-            <img class="card-img" src="${employee.image}" alt="${employee.firstName} ${employee.lastName}'s profile picture">
+            <img class="card-img" src="${image}" alt="${firstName} ${lastName}'s profile picture">
         </div>
         <div class="card-info-container">
-            <h3 id="${employee.firstName} ${employee.lastName}" class="card-name cap">${employee.firstName} ${employee.lastName}</h3>
+            <h3 id="${firstName} ${lastName}" class="card-name cap">${firstName} ${lastName}</h3>
             <p class="card-text">${employee.email}</p>
-            <p class="card-text cap">${employee.city}, ${employee.state}, ${employee.country}</p>
+            <p class="card-text cap">${employee.location.country}</p>
         </div>
       </div>
     `;
