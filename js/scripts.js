@@ -3,7 +3,7 @@
 const page = new Page();
 page.loadSearchForm();
 
-const users = "https://randomuser.me/api/?results=3&gender=male"; // remove male filter
+const users = "https://randomuser.me/api/?results=12&gender=male"; // remove male filter
 const gallery = document.querySelector("#gallery");
 const employees = [];
 
@@ -29,7 +29,6 @@ async function displayUserInfo(array) {
     gallery.insertAdjacentHTML("beforeend", html);
   });
 
-  console.log(employees);
   return await array;
 }
 
@@ -55,8 +54,10 @@ function loadModel(selection) {
     (employee) => `${employee.name.first} ${employee.name.last}` === selection
   )[0]; // Note index 0
 
-  console.log(select);
-
   const modal = new Modal(select);
-  modal.log(modal.location.street);
+  modal.displayModal();
+  document.addEventListener("click", (e) => {
+    const target = e.target;
+    modal.closeModel(target);
+  });
 }
