@@ -4,25 +4,16 @@ page.loadSearchForm();
 
 const users = "https://randomuser.me/api/?results=3&gender=male";
 const gallery = document.querySelector("#gallery");
-const cards = document.querySelectorAll(".card");
-
-// async function listeners(array) {
-//   await array.forEach((item) => {
-//     item.addEventListener("click", (e) => console.log(e.target));
-//   });
-// }
-
-// listeners(cards);
+const employees = [];
 
 // Make a GET request to fetch API
-// Parse data into js object
 async function getJSON(url) {
   const response = await fetch(url);
   const data = await response.json();
   return data.results;
 }
 
-getJSON(users).then(displayUserInfo);
+getJSON(users).then(displayUserInfo).then(addEventListeners);
 
 function newEmployee(object) {
   const employee = new Employee(
@@ -34,7 +25,7 @@ function newEmployee(object) {
     object.location.state,
     object.location.country
   );
-
+  employees.push(employee);
   return employee;
 }
 
@@ -47,11 +38,8 @@ async function displayUserInfo(array) {
     // Create html element
     const html = page.createElement(employee);
 
+    // Append card to gallery
     gallery.insertAdjacentHTML("beforeend", html);
-
-    // gallery.querySelectorAll(".card").addEventListener("click", (e) => {
-    //   console.log(e.target);
-    // });
   });
 
   return await array;
@@ -59,14 +47,26 @@ async function displayUserInfo(array) {
 
 /** Create a modal window */
 // On click user card
+const modal = new Modal(employees);
+modal.log();
 
 // Populate modal information with selected user
-function createModal() {}
 
 /** EVENT LISTENERS */
-// Show modal window
-gallery.addEventListener("click", (e) => {
-  if (e.target.className !== "gallery") {
-    console.log(e.target);
-  }
-});
+
+//  Listener using cards
+function addEventListeners() {
+  const cards = document.querySelectorAll(".card");
+  let selection = null;
+
+  cards.forEach((card) => {
+    card.addEventListener("click", (e) => {
+      selection = card.id;
+      loadModel(selection);
+    });
+  });
+}
+
+function loadModel(name) {
+  console.log(name);
+}
