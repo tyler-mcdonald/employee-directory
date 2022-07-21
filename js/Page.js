@@ -15,7 +15,7 @@ class Page {
 
   createElement(employee) {
     const html = `
-      <div class="card">
+      <div class="card" id="${employee.firstName} ${employee.lastName}">
         <div class="card-img-container">
             <img class="card-img" src="${employee.image}" alt="${employee.firstName} ${employee.lastName}'s profile picture">
         </div>
