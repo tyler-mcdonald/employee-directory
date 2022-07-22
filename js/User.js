@@ -1,4 +1,4 @@
-class Employee {
+class User {
   constructor(user) {
     this.image = user.picture.large;
     this.name = {
@@ -38,36 +38,36 @@ class Employee {
   displayModal() {
     const html = `
       <div class="modal-container">
-
           <div class="modal">
+            <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
 
-              <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
-              
-              <div class="modal-info-container">
-                  <img class="modal-img" src="${this.image}" alt="${this.name.full}'sprofile picture">
-                  <h3 id="${this.name.full}" class="modal-name cap">${this.name.full}</h3>
-                  <p class="modal-text">${this.email}</p>
-                  <p class="modal-text cap">${this.address.city}</p>
-                  <hr>
-                  <p class="modal-text">${this.phone}</p>
-                  <p class="modal-text">${this.address.streetNumber} ${this.address.streetName}, ${this.address.city}, ${this.address.state} ${this.address.postcode}</p>
-                  <p class="modal-text">Birthday: ${this.birthday}</p>
-              </div>
-              
-              <button type="button" id="previous-modal">Previous</button>
-              <button type="button" id="next-modal">Next</button>
+            <div class="modal-info-container">
+                <img class="modal-img" src="${this.image}" alt="${this.name.full}'sprofile picture">
+                <h3 id="${this.name.full}" class="modal-name cap">${this.name.full}</h3>
+                <p class="modal-text">${this.email}</p>
+                <p class="modal-text cap">${this.address.city}</p>
+                <hr>
+                <p class="modal-text">${this.phone}</p>
+                <p class="modal-text">${this.address.streetNumber} ${this.address.streetName}, ${this.address.city}, ${this.address.state} ${this.address.postcode}</p>
+                <p class="modal-text">Birthday: ${this.birthday}</p>
+            </div>
+            
+            <div class="modal-btn-container">
+              <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+              <button type="button" id="modal-next" class="modal-next btn">Next</button>
+            </div>
           </div>
-    `;
+      `;
 
     gallery.insertAdjacentHTML("beforebegin", html);
 
     /** Event listeners for prev/next buttons */
-    document.querySelector("#previous-modal").addEventListener("click", (e) => {
+    document.querySelector("#modal-prev").addEventListener("click", (e) => {
       this.closeModal();
       changeModals(e.target);
     });
 
-    document.querySelector("#next-modal").addEventListener("click", (e) => {
+    document.querySelector("#modal-next").addEventListener("click", (e) => {
       this.closeModal();
       changeModals(e.target);
     });

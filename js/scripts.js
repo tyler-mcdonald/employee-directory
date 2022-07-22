@@ -2,13 +2,15 @@
 const page = new Page();
 page.loadSearchForm();
 
-const users = "https://randomuser.me/api/?results=12&gender=male"; // remove male filter
 const gallery = document.querySelector("#gallery");
 const searchForm = document.querySelector("#search-input");
-const employees = [];
+const users = [];
 let currentModal = null;
 
-getJSON(users).then(createUsers).then(displayUsers).then(addEventListeners);
+getJSON("https://randomuser.me/api/?results=12&gender=male")
+  .then(createUsers)
+  .then(displayUsers)
+  .then(addEventListeners);
 
 /** Fetch API */
 async function getJSON(url) {
@@ -19,28 +21,21 @@ async function getJSON(url) {
 
 /** Create users */
 async function createUsers(array) {
-  const empls = await array.map((user) => {
-    const empl = new Employee(user);
-    employees.push(empl);
-    return empl;
+  const userObjs = await array.map((object) => {
+    const user = new User(object);
+    users.push(user);
+    return user;
   });
-  return await empls;
+  return await userObjs;
 }
 
 /** Display users */
 async function displayUsers(array) {
-  await array.map((empl) => {
-    const html = page.createElement(empl);
+  await array.map((user) => {
+    const html = page.createElement(user);
     gallery.insertAdjacentHTML("beforeend", html);
   });
   return await array;
-}
-
-/** Clear previous users */
-function removeUsers() {
-  gallery.querySelectorAll(".card").forEach((card) => {
-    card.remove();
-  });
 }
 
 /** Add event listener to each user card */
@@ -51,14 +46,18 @@ function addEventListeners() {
   });
 }
 
+/** Clear previous users */
+function removeUsers() {
+  gallery.querySelectorAll(".card").forEach((card) => card.remove());
+}
+
 /** Loads and displays modal interface */
 function loadModal(selection) {
-  const empl = employees.filter((empl) => `${empl.name.full}` === selection)[0]; // Note index 0
+  const user = users.filter((user) => `${user.name.full}` === selection)[0]; // Note index 0
+  currentModal = user;
+  user.displayModal();
 
-  empl.displayModal();
-
-  currentModal = empl;
-
+  // Event listener for close button
   document.addEventListener("click", (e) => {
     const target = e.target;
     const modal = document.querySelector(".modal");
@@ -66,7 +65,7 @@ function loadModal(selection) {
     const closeBtnX = document.querySelector("#modal-close-btn strong");
 
     if (modal && (closeBtn === target || closeBtnX === target))
-      empl.closeModal();
+      user.closeModal();
   });
 }
 
@@ -74,27 +73,27 @@ function loadModal(selection) {
 searchForm.addEventListener("keyup", () => {
   const input = searchForm.value.toLowerCase();
   removeUsers();
-  filterFunction(input, employees);
+  filterFunction(input, users);
 });
 
 /** Filter user input */
-function filterFunction(input, employees) {
-  const names = employees.filter((empl) => `${empl.name.full}`.includes(input));
+function filterFunction(input, users) {
+  const names = users.filter((empl) => `${empl.name.full}`.includes(input));
   displayUsers(names);
   addEventListeners();
 }
 
 /** Change Modals */
 function changeModals(target) {
-  let index = employees.indexOf(currentModal);
-  const items = employees.length;
+  let index = users.indexOf(currentModal);
+  const items = users.length;
 
-  if (target.id === "next-modal" && index < items - 1) {
+  if (target.id === "modal-next" && index < items - 1) {
     index += 1;
-  } else if (target.id === "previous-modal" && index > 0) {
+  } else if (target.id === "modal-prev" && index > 0) {
     index -= 1;
   }
 
-  currentModal = employees[index];
-  employees[index].displayModal();
+  currentModal = users[index];
+  users[index].displayModal();
 }
