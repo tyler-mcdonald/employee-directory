@@ -13,20 +13,21 @@ class Page {
     searchForm.insertAdjacentHTML("afterbegin", form);
   }
 
-  createElement(employee) {
-    const firstName = employee.name.first;
-    const lastName = employee.name.last;
-    const image = employee.picture.large;
+  createElement(empl) {
+    const firstName = empl.name.first;
+    const lastName = empl.name.last;
+    const fullName = empl.name.full;
+    const image = empl.image;
 
     const html = `
-      <div class="card" id="${firstName} ${lastName}">
+      <div class="card" id="${fullName}">
         <div class="card-img-container">
             <img class="card-img" src="${image}" alt="${firstName} ${lastName}'s profile picture">
         </div>
         <div class="card-info-container">
             <h3 id="${firstName} ${lastName}" class="card-name cap">${firstName} ${lastName}</h3>
-            <p class="card-text">${employee.email}</p>
-            <p class="card-text cap">${employee.location.country}</p>
+            <p class="card-text">${empl.email}</p>
+            <p class="card-text cap">${empl.address.city}</p>
         </div>
       </div>
     `;

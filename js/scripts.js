@@ -3,44 +3,50 @@
 const page = new Page();
 page.loadSearchForm();
 
-const users = "https://randomuser.me/api/?results=12&gender=male"; // remove male filter
+const users = "https://randomuser.me/api/?results=3&gender=male"; // remove male filter
 const gallery = document.querySelector("#gallery");
+const searchForm = document.querySelector("#search-input");
 const employees = [];
 
-getJSON(users).then(displayUserInfo).then(addEventListeners);
+getJSON(users).then(createUsers).then(displayUsers).then(addEventListeners);
 
-// Fetch API
+/** Fetch API */
 async function getJSON(url) {
   const response = await fetch(url);
   const data = await response.json();
   return data.results;
 }
 
-// Map over each item and display on page
-async function displayUserInfo(array) {
-  await array.map((employee) => {
-    // Store new employee object
-    employees.push(employee);
+/** Create users */
+async function createUsers(array) {
+  const empls = await array.map((user) => {
+    const empl = new Employee(user);
+    employees.push(empl);
+    return empl;
+  });
+  return await empls;
+}
 
-    // Create html element
-    const html = page.createElement(employee);
-
-    // Append card to gallery
+/** Display users */
+async function displayUsers(array) {
+  await array.map((empl) => {
+    const html = page.createElement(empl);
     gallery.insertAdjacentHTML("beforeend", html);
   });
-
   return await array;
 }
 
-/** Create a modal window */
+/** Clear previous users */
+function removeUsers() {
+  gallery.querySelectorAll(".card").forEach((card) => {
+    card.remove();
+  });
+}
 
-/** EVENT LISTENERS */
-
-//  Listener using cards
+/** Add event listener to each user card */
 function addEventListeners() {
   const cards = document.querySelectorAll(".card");
   let selection = null;
-
   cards.forEach((card) => {
     card.addEventListener("click", (e) => {
       selection = card.id;
@@ -49,15 +55,28 @@ function addEventListeners() {
   });
 }
 
+/** Loads and displays modal interface */
+// Refactor more of this into Employee.js
 function loadModel(selection) {
-  const select = employees.filter(
-    (employee) => `${employee.name.first} ${employee.name.last}` === selection
-  )[0]; // Note index 0
+  const empl = employees.filter((empl) => `${empl.name.full}` === selection)[0]; // Note index 0
 
-  const modal = new Modal(select);
-  modal.displayModal();
+  empl.displayModal();
   document.addEventListener("click", (e) => {
     const target = e.target;
-    modal.closeModel(target);
+    empl.closeModal(target);
   });
+}
+
+// Search form listener
+searchForm.addEventListener("keyup", () => {
+  const input = searchForm.value.toLowerCase();
+  removeUsers();
+  // console.log(employeeNames);
+  filterFunction(input, employees);
+});
+
+/** Filter user input */
+function filterFunction(input, employees) {
+  const names = employees.filter((empl) => `${empl.name.full}`.includes(input));
+  displayUsers(names);
 }
