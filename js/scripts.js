@@ -3,7 +3,7 @@
 const page = new Page();
 page.loadSearchForm();
 
-const users = "https://randomuser.me/api/?results=3&gender=male"; // remove male filter
+const users = "https://randomuser.me/api/?results=12&gender=male"; // remove male filter
 const gallery = document.querySelector("#gallery");
 const searchForm = document.querySelector("#search-input");
 const employees = [];
@@ -50,14 +50,14 @@ function addEventListeners() {
   cards.forEach((card) => {
     card.addEventListener("click", (e) => {
       selection = card.id;
-      loadModel(selection);
+      loadModal(selection);
     });
   });
 }
 
 /** Loads and displays modal interface */
 // Refactor more of this into Employee.js
-function loadModel(selection) {
+function loadModal(selection) {
   const empl = employees.filter((empl) => `${empl.name.full}` === selection)[0]; // Note index 0
 
   empl.displayModal();
@@ -79,4 +79,5 @@ searchForm.addEventListener("keyup", () => {
 function filterFunction(input, employees) {
   const names = employees.filter((empl) => `${empl.name.full}`.includes(input));
   displayUsers(names);
+  addEventListeners();
 }
