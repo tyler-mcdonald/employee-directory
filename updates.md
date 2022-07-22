@@ -13,6 +13,8 @@
 - How to overlay an event listener on the parent object, and disregard event targets on the child nodes?
     * E.g. On the `id="modal-close-btn"` I want to place event listener on the button, but still want event to fire if I click the `<strong>X</strong>`
 
+- Doesn't it make more sense to format each phone # based on the location? Not all numbers can be formatted the same as US. Will this ding me on the submission?
+
 
 <!-- Difficulties -->
 - filtering through objects!

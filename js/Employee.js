@@ -7,8 +7,8 @@ class Employee {
       full: `${user.name.first} ${user.name.last}`.toLowerCase(),
     };
     this.email = user.email;
-    this.birthday = user.dob.date;
-    this.phone = user.phone;
+    this.dob = user.dob.date;
+    this.unformattedPhone = user.phone;
     this.address = {
       streetNumber: user.location.street.number,
       streetName: user.location.street.name,
@@ -19,43 +19,62 @@ class Employee {
     };
   }
 
+  get phone() {
+    const clean = this.unformattedPhone.replaceAll(/[^A-Za-z0-9]+/g, "");
+    const p1 = clean.slice(0, 3);
+    const p2 = clean.slice(3, 6);
+    const p3 = clean.slice(6);
+    const formatted = `(${p1}) ${p2}-${p3}`;
+    return formatted;
+  }
+
+  get birthday() {
+    const year = this.dob.slice(0, 4);
+    const month = this.dob.slice(5, 7);
+    const day = this.dob.slice(8, 10);
+    return `${month}/${day}/${year}`;
+  }
+
   displayModal() {
     const html = `
-        <div class="modal-container">
-            <div class="modal">
-                
-                <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+      <div class="modal-container">
 
-                <div class="modal-info-container">
-                    <img class="modal-img" src="${this.image}" alt="${this.name.full}'sprofile picture">
+          <div class="modal">
 
-                    <h3 id="${this.name.full}" class="modal-name cap">${this.name.full}</h3>
-
-                    <p class="modal-text">${this.email}</p>
-
-                    <p class="modal-text cap">${this.address.city}</p>
-
-                    <hr>
-
-                    <p class="modal-text">(555) 555-5555</p>
-
-                    <p class="modal-text">${this.address.streetNumber} ${this.address.streetName}, ${this.address.city}, ${this.address.state} ${this.address.postcode}</p>
-
-                    <p class="modal-text">Birthday: DD/MM/YYYY</p>
-                </div>
-            </div>
+              <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+              
+              <div class="modal-info-container">
+                  <img class="modal-img" src="${this.image}" alt="${this.name.full}'sprofile picture">
+                  <h3 id="${this.name.full}" class="modal-name cap">${this.name.full}</h3>
+                  <p class="modal-text">${this.email}</p>
+                  <p class="modal-text cap">${this.address.city}</p>
+                  <hr>
+                  <p class="modal-text">${this.phone}</p>
+                  <p class="modal-text">${this.address.streetNumber} ${this.address.streetName}, ${this.address.city}, ${this.address.state} ${this.address.postcode}</p>
+                  <p class="modal-text">Birthday: ${this.birthday}</p>
+              </div>
+              
+              <button type="button" id="previous-modal">Previous</button>
+              <button type="button" id="next-modal">Next</button>
+          </div>
     `;
 
     gallery.insertAdjacentHTML("beforebegin", html);
+
+    /** Event listeners for prev/next buttons */
+    document.querySelector("#previous-modal").addEventListener("click", (e) => {
+      this.closeModal();
+      changeModals(e.target);
+    });
+
+    document.querySelector("#next-modal").addEventListener("click", (e) => {
+      this.closeModal();
+      changeModals(e.target);
+    });
   }
 
-  closeModal(target) {
-    const modal = document.querySelector(".modal");
-    const closeBtn = document.querySelector("#modal-close-btn");
-    const closeBtnX = document.querySelector("#modal-close-btn strong");
+  closeModal() {
     const modalContainer = document.querySelector(".modal-container");
-    if (modal && (closeBtn === target || closeBtnX === target)) {
-      modalContainer.remove();
-    }
+    modalContainer.remove();
   }
 }
