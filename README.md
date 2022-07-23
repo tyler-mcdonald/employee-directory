@@ -1,11 +1,9 @@
 
 # Company Employee Directory
 
-### A mock company employee directory using public APIs
+### A mock company employee directory using public API
 
-This project is a template for creating a company directory by pulling employee information from the [Random User Generator](https://randomuser.me/) site. 
-
-Each time the page is loaded, a new list of randomized user information is returned from the HTTP request and displayed on the page. 
+Each time the page is loaded, a new list of random employee information is returned from the HTTP request at [Random User Generator](https://randomuser.me/) and displayed on the page. Users can then filter through names, or click an employee to view a modal of additional information.
 
 ### Project highlights
 #### Working with APIs
@@ -25,4 +23,4 @@ The following styles were changed from the default `styles.css` file:
 4. `.modal.img`: added `border` property
 5. `modal-btn-container`: removed `border`
 
-Thank you (Treehouse)[https://teamtreehouse.com/] staff for the awesome default styling!
+Thank you [Treehouse](https://teamtreehouse.com/) staff for the default styling!
