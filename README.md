@@ -1,5 +1,5 @@
 
-# Company Employee Directory
+# Employee Directory
 
 ### A mock company employee directory using public API
 
