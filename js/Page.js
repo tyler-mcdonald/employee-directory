@@ -1,18 +1,30 @@
 class Page {
+  /**
+   * Display search box with event handler
+   */
   loadSearchForm() {
-    /** Create and append search form */
-
     const searchForm = document.querySelector(".search-container");
-
     const form = `
         <form action="#" method="get">
             <input type="search" id="search-input" class="search-input" placeholder="Search...">
             <input type="submit" value="&#x1F50D;" id="search-submit" class="search-submit">
         </form>`;
-
     searchForm.insertAdjacentHTML("afterbegin", form);
+
+    /** Search input */
+    const searchBox = document.querySelector("#search-input");
+    searchBox.addEventListener("keyup", () => {
+      const input = searchBox.value.toLowerCase();
+      removeUsers();
+      filterFunction(input, users);
+    });
   }
 
+  /**
+   * Create user card HTML element
+   * @param {object} empl user object
+   * @returns HTML element for user info card
+   */
   createElement(empl) {
     const firstName = empl.name.first;
     const lastName = empl.name.last;
