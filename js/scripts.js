@@ -5,7 +5,7 @@ const gallery = document.querySelector("#gallery");
 const users = [];
 let currentModal = null;
 
-getJSON("https://randomuser.me/api/?results=12")
+getJSON("https://randomuser.me/api/?results=12&nat=us")
   .then(createUsers)
   .then(displayUsers)
   .then(addEventListeners);
