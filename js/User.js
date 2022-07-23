@@ -19,6 +19,10 @@ class User {
     };
   }
 
+  /**
+   * Returns phone number in format (###) ###-####.
+   * Allows for a-z for international phones
+   */
   get phone() {
     const clean = this.unformattedPhone.replaceAll(/[^A-Za-z0-9]+/g, "");
     const p1 = clean.slice(0, 3);
@@ -28,6 +32,9 @@ class User {
     return formatted;
   }
 
+  /**
+   * Returns birthday in format MM/DD/YYYY
+   */
   get birthday() {
     const year = this.dob.slice(0, 4);
     const month = this.dob.slice(5, 7);
@@ -35,6 +42,9 @@ class User {
     return `${month}/${day}/${year}`;
   }
 
+  /**
+   * Insert modal into document. Attach event handlers to `prev` and `next` buttons
+   */
   displayModal() {
     const html = `
       <div class="modal-container">
@@ -59,20 +69,35 @@ class User {
           </div>
       `;
 
+    /** Insert modal */
     gallery.insertAdjacentHTML("beforebegin", html);
 
-    /** Event listeners for prev/next buttons */
+    /** Event listeners */
+    document.addEventListener("click", (e) => {
+      const target = e.target;
+      const modal = document.querySelector(".modal");
+      const closeBtn = document.querySelector("#modal-close-btn");
+      const closeBtnX = document.querySelector("#modal-close-btn strong");
+      if (modal && (closeBtn === target || closeBtnX === target))
+        this.closeModal();
+    });
+
+    // Prev button
     document.querySelector("#modal-prev").addEventListener("click", (e) => {
       this.closeModal();
       changeModals(e.target);
     });
 
+    // Next button
     document.querySelector("#modal-next").addEventListener("click", (e) => {
       this.closeModal();
       changeModals(e.target);
     });
   }
 
+  /**
+   * Remove currently displayed modal
+   */
   closeModal() {
     const modalContainer = document.querySelector(".modal-container");
     modalContainer.remove();
